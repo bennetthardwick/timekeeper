@@ -11,7 +11,7 @@ fn main() {
 
     for event in server.events() {
         match event {
-            Event::FocusChange(window) => server.snapshot_active_window(window).unwrap()
+            Event::FocusChange => server.snapshot_active_window().unwrap()
         };
         println!("{:?}", event);
     }

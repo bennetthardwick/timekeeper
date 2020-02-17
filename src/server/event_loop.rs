@@ -6,7 +6,7 @@ pub struct EventLoop<'a> {
 
 #[derive(Debug)]
 pub enum Event {
-    FocusChange(xcb::Window),
+    FocusChange,
 }
 
 impl<'a> Iterator for EventLoop<'a> {
@@ -14,8 +14,6 @@ impl<'a> Iterator for EventLoop<'a> {
 
     fn next(&mut self) -> Option<Self::Item> {
         loop {
-            self.server.flush();
-
             let event = self.server.connection.wait_for_event()?;
 
             let e = match event.response_type() {
@@ -39,6 +37,6 @@ impl<'a> EventLoop<'a> {
     }
 
     fn on_property_notify(&self, event: &xcb::PropertyNotifyEvent) -> Option<Event> {
-        Some(Event::FocusChange(event.window()))
+        Some(Event::FocusChange)
     }
 }
